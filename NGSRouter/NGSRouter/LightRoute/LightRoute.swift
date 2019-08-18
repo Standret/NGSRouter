@@ -30,7 +30,7 @@ import ObjectiveC.runtime
 // MARK: Public typealiase
 
 /// This block returns the controller type to which could lead.
-public typealias TransitionSetupBlock<T> = ((T) -> Any?)
+public typealias TransitionSetupBlock<T> = ((T) -> Void)
 
 /// This block is responsible for return transition data.
 public typealias TransitionBlock = ((_ source: UIViewController, _ destination: UIViewController) -> Void)
@@ -43,9 +43,6 @@ public typealias TransitionPostLinkAction = (() throws -> Void)
 
 /// Establishes liability for the current transition.
 public enum TransitionStyle {
-
-    /// This type is responsible for transition case how modal presentation will be add transition on view.
-    public typealias ModalStyle = (transition: UIModalTransitionStyle, presentation: UIModalPresentationStyle)
 
     // MARK: -
     /// Responds transition case how split controller will be add transition on view.
@@ -78,7 +75,7 @@ public enum TransitionStyle {
     case split(style: SplitStyle)
 
     /// This case performs that current transition must be add to navigation completion stack.
-    case modal(style: ModalStyle)
+    case modal(transition: UIModalTransitionStyle, presentation: UIModalPresentationStyle)
 
     /// This case performs that current transition must be presented from initiated view controller.
     case `default`
@@ -125,7 +122,7 @@ public extension TransitionHandler where Self: UIViewController {
 		node.segueIdentifier = identifier
 		
 		// Default transition action.
-		node.postLinkAction { [unowned node] in try node.then { _ in return nil } }
+        node.postLinkAction { [unowned node] in try node.then { _ in } }
 		
 		return node
 	}

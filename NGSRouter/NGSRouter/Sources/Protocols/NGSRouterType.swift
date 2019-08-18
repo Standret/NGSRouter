@@ -21,71 +21,75 @@ public protocol NGSRouterType: class {
     /// Load new storyboard and made init VC as root
     /// - Parameter storyboard: The target storyboard
     /// - Parameter to: Metatype of destination source
-    /// - Parameter parameter: The object which pass to destination VC
     ///
-    func loadStoryboard<Navigatable: NGSParamNavigatable>(
-        storyboard: NGSStoryboard,
-        to _: Navigatable.Type,
-        parameter: Navigatable.Parameter
+    func loadStoryboard<Destination: NGSNavigatable>(
+        to _: Destination.Type,
+        storyboard: NGSStoryboard
         ) throws
     
     ///
     /// Load new storyboard and made init VC as root
     /// - Parameter storyboard: The target storyboard
+    /// - Parameter to: Metatype of destination source
+    /// - Parameter parameter: The object which pass to destination VC
     ///
-    func loadStoryboard(storyboard: NGSStoryboard) throws
+    func loadStoryboard<Destination: NGSParamNavigatable>(
+        storyboard: NGSStoryboard,
+        to _: Destination.Type,
+        parameter: Destination.Parameter
+        ) throws
     
     // MARK: - NAVIGATION
     
     ///
     /// Load new module to screen based on generic navigation type
-    /// - Parameter to: represent target Navigatable
+    /// - Parameter to: represent target Destination
     /// - Parameter typeNavigation: naviagtion style
     /// - Parameter animated: animated of transition
     ///
     /// - Important: you have to register module for navigation before usage
     ///
-    func navigate<Navigatable: NGSNavigatable>(
-        to _: Navigatable.Type,
+    func navigate<Destination: NGSNavigatable>(
+        to _: Destination.Type,
         typeNavigation: NGSTransitionStyle,
         animated: Bool
         ) throws
     
     ///
     /// Load new module to screen based on generic navigation type
-    /// - Parameter to: represent target Navigatable
+    /// - Parameter to: represent target Destination
     /// - Parameter parameter: navigation parameter which pass to next module
     /// - Parameter typeNavigation: naviagtion style
     /// - Parameter animated: animated of transition
     ///
     /// - Important: you have to register module for navigation before usage
     ///
-    func navigate<Navigatable: NGSParamNavigatable>(
-        to _: Navigatable.Type,
-        parameter: Navigatable.Parameter,
+    func navigate<Destination: NGSParamNavigatable>(
+        to _: Destination.Type,
+        parameter: Destination.Parameter,
         typeNavigation: NGSTransitionStyle,
         animated: Bool
         ) throws
     
     ///
     /// Load new module to screen based on generic navigation type with close closure
-    /// - Parameter to: represent target Navigatable
+    /// - Parameter to: represent target Destination
     /// - Parameter typeNavigation: naviagtion style
     /// - Parameter animated: animated of transition
     /// - Parameter closeCompletion: represent closure which invokes before close opened module
     ///
     /// - Important: you have to register module for navigation before usage
     ///
-    func navigate<Navigatable: NGSCloseNavigatable>(
-        to _: Navigatable.Type,
+    func navigate<Destination: NGSCloseNavigatable>(
+        to _: Destination.Type,
         typeNavigation: NGSTransitionStyle,
         animated: Bool,
-        closeCompletion: @escaping CloseCompletition<Navigatable.CloseObject>
+        closeCompletion: @escaping CloseCompletition<Destination.CloseObject>
         ) throws
     
     ///
     /// Load new module to screen based on generic navigation type with close closure
-    /// - Parameter to: represent target Navigatable
+    /// - Parameter to: represent target Destination
     /// - Parameter parameter: navigation parameter which pass to next module
     /// - Parameter typeNavigation: naviagtion style
     /// - Parameter animated: animated of transition
@@ -93,12 +97,12 @@ public protocol NGSRouterType: class {
     ///
     /// - Important: you have to register module for navigation before usage
     ///
-    func navigate<Navigatable: NGSParamCloseNavigatable>(
-        to _: Navigatable.Type,
-        parameter: Navigatable.Parameter,
+    func navigate<Destination: NGSParamCloseNavigatable>(
+        to _: Destination.Type,
+        parameter: Destination.Parameter,
         typeNavigation: NGSTransitionStyle,
         animated: Bool,
-        closeCompletion: @escaping CloseCompletition<Navigatable.CloseObject>
+        closeCompletion: @escaping CloseCompletition<Destination.CloseObject>
         ) throws
     
     // MARK: - CLOSE
@@ -115,9 +119,9 @@ public protocol NGSRouterType: class {
     /// - Parameter parameter: close parameter which pass to calling module
     /// - Parameter animated: animated of transition
     ///
-    func close<Navigatable: NGSCloseNavigatable>(
-        target: Navigatable,
-        parameter: Navigatable.CloseObject,
+    func close<Destination: NGSCloseNavigatable>(
+        target: Destination,
+        parameter: Destination.CloseObject,
         animated: Bool
         ) throws
 }

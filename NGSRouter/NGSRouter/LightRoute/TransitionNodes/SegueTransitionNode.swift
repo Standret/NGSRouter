@@ -93,18 +93,14 @@ public final class SegueTransitionNode<T>: GenericTransitionNode<T> {
                     }
                 }
                 
-                var output: Any?
-                
                 let destinationModuleInput = (self.customModuleInput != nil) ? self.customModuleInput : destination.moduleInput
                 if let moduleInput = destinationModuleInput, moduleInput is T {
-                    output = block(destination.moduleInput as! T)
+                    block(destination.moduleInput as! T)
                 } else if destination is T {
-                    output = block(destination as! T)
+                    block(destination as! T)
                 } else {
                     throw LightRouteError.castError(controller: String(describing: destination.self), type: "\(self.type)")
                 }
-                
-                segue.source.moduleOutput = output
             })
         }
 

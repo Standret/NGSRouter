@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7D24916323099D830071F88E /* NGSStoryboardIdFactories.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D24916223099D830071F88E /* NGSStoryboardIdFactories.swift */; };
 		7DB18FD42301EEF400C150A5 /* NGSRouter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DB18FCA2301EEF300C150A5 /* NGSRouter.framework */; };
 		7DB18FD92301EEF400C150A5 /* NGSRouterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DB18FD82301EEF400C150A5 /* NGSRouterTests.swift */; };
 		7DB1901A2301F05800C150A5 /* NGSRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DB190032301F05800C150A5 /* NGSRouter.swift */; };
@@ -41,6 +42,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		7D24916223099D830071F88E /* NGSStoryboardIdFactories.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NGSStoryboardIdFactories.swift; sourceTree = "<group>"; };
 		7DB18FCA2301EEF300C150A5 /* NGSRouter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = NGSRouter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7DB18FCE2301EEF300C150A5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7DB18FD32301EEF400C150A5 /* NGSRouterTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NGSRouterTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -126,10 +128,12 @@
 		7DB190022301F05800C150A5 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				7DB190052301F05800C150A5 /* Protocols */,
+				7DB190082301F05800C150A5 /* NGSStoryboardIdFactory.swift */,
 				7DB190032301F05800C150A5 /* NGSRouter.swift */,
 				7DB190042301F05800C150A5 /* NGSRouterConfig.swift */,
-				7DB190052301F05800C150A5 /* Protocols */,
 				7DB190092301F05800C150A5 /* NGSRouterAssember.swift */,
+				7D24916223099D830071F88E /* NGSStoryboardIdFactories.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -139,7 +143,6 @@
 			children = (
 				7DB190062301F05800C150A5 /* NGSRouterType.swift */,
 				7DB190072301F05800C150A5 /* NGSNavigatable.swift */,
-				7DB190082301F05800C150A5 /* NGSStoryboardIdFactory.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -305,6 +308,7 @@
 				7DB190292301F05800C150A5 /* StoryboardFactoryProtocol.swift in Sources */,
 				7DB1901C2301F05800C150A5 /* NGSRouterType.swift in Sources */,
 				7DB1901F2301F05800C150A5 /* NGSRouterAssember.swift in Sources */,
+				7D24916323099D830071F88E /* NGSStoryboardIdFactories.swift in Sources */,
 				7DB1902B2301F05800C150A5 /* TransitionHandler.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

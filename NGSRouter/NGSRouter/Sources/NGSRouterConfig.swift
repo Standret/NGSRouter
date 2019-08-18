@@ -32,6 +32,9 @@ final public class NGSRouterConfig {
     ///
     public var destinationSourceProperyName: String = "presenter"
     
+    ///
+    /// This function register new Startegy to get id for storyboard instantinate
+    ///
     public func registerStoryboardIdFactory(factory: NGSStoryboardIdFactory) {
         storyboardIdFactory = factory
     }

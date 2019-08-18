@@ -66,25 +66,21 @@ public class GenericTransitionNode<T> {
 		guard let destination = self.destination else { throw LightRouteError.viewControllerWasNil("Destination") }
 		
 		var moduleInput: Any? = (self.customModuleInput != nil) ? self.customModuleInput : destination.moduleInput
-		
 		// If first controller was UINavigationController, then try find top view controller.
 		if destination is UINavigationController {
 			let result = (destination as! UINavigationController).topViewController ?? destination
 			moduleInput = (self.customModuleInput != nil) ? self.customModuleInput : result.moduleInput
 		}
-		
-		var moduleOutput: Any?
-		
+				
 		if moduleInput is T {
-			moduleOutput = block(moduleInput as! T)
+			block(moduleInput as! T)
 		} else if destination is T {
-			moduleOutput = block(destination as! T)
+			block(destination as! T)
 		} else {
 			throw LightRouteError.castError(controller: .init(describing: T.self), type: "\(moduleInput as Any)")
 		}
-		
-		self.destination?.moduleOutput = moduleOutput
-		try self.perform()
+        
+        try self.perform()
 	}
 	
 	/// This method makes a current transition.
@@ -112,7 +108,7 @@ public class GenericTransitionNode<T> {
 	/// This method waits to be able to fire.
 	/// - Parameter completion: Whait push action from `TransitionPromise` class.
 	///
-	func postLinkAction( _ completion: @escaping TransitionPostLinkAction) {
+	internal func postLinkAction( _ completion: @escaping TransitionPostLinkAction) {
 		self.postLinkAction = completion
 	}
 }

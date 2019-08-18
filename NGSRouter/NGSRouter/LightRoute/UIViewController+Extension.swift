@@ -33,7 +33,7 @@ extension UIViewController: TransitionHandler {
 	
 	/// This property return tradition VIPER presenter object from "output" property.
     var moduleInput: Any? {
-        return findValue(for: "output", in: Mirror(reflecting: self))
+        return findValue(for: "presenter", in: Mirror(reflecting: self))
     }
     
     private func findValue(for propertyName: String, in mirror: Mirror) -> Any? {
@@ -49,18 +49,6 @@ extension UIViewController: TransitionHandler {
         
         return nil
     }
-	
-	/// This property have responsobility about store property for moduleOutput protocols.
-	public var moduleOutput: Any? {
-		get {
-			let box = objc_getAssociatedObject(self, &UIViewController.TransitionHandlerModuleOutput) as? Box
-			return box?.value
-		}
-		set {
-			objc_setAssociatedObject(self, &UIViewController.TransitionHandlerModuleOutput, Box(newValue), objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN)
-		}
-	}
-	
 
 	///
     /// This methods get moduleInput by selector.
@@ -68,7 +56,7 @@ extension UIViewController: TransitionHandler {
     /// - Parameter selectorName: Selector name for find object in view controller.
     /// - Returns: Return something object, how can be promisee about moduleInput.
     ///
-	func getModuleInput(for selectorName: String) -> Any? {
+	internal func getModuleInput(for selectorName: String) -> Any? {
 		
 		let reflection = Mirror(reflecting: self).children
 		var output: Any?
