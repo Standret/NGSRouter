@@ -2,9 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:NGSRouterExample/NGSRouterExample.xcodeproj">
+      location = "group:NGSRouter.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:NGSRouter/NGSRouter.xcodeproj">
+      location = "group:NGSRouterExample/NGSRouterExample.xcodeproj">
    </FileRef>
 </Workspace>

@@ -88,6 +88,37 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7D624672232CCEF1008D60E8 /* TransitionsNodes */ = {
+			isa = PBXGroup;
+			children = (
+				7DB1900D2301F05800C150A5 /* TransitionNode.swift */,
+				7DB1900E2301F05800C150A5 /* GenericTransitionNode.swift */,
+				7DB1900F2301F05800C150A5 /* SegueTransitionNode.swift */,
+				7DB190102301F05800C150A5 /* CustomTransitionNode.swift */,
+				7DB190112301F05800C150A5 /* CloseTransitionNode.swift */,
+			);
+			name = TransitionsNodes;
+			sourceTree = "<group>";
+		};
+		7D624673232CCF06008D60E8 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				7DB190162301F05800C150A5 /* StoryboardFactoryProtocol.swift */,
+				7DB190172301F05800C150A5 /* ViewContainerForEmbedSegue.swift */,
+				7DB190182301F05800C150A5 /* TransitionHandler.swift */,
+			);
+			name = Protocols;
+			sourceTree = "<group>";
+		};
+		7D624675232CCF33008D60E8 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				7DB190062301F05800C150A5 /* NGSRouterType.swift */,
+				7DB190072301F05800C150A5 /* NGSNavigatable.swift */,
+			);
+			name = Protocols;
+			sourceTree = "<group>";
+		};
 		7DB18FC02301EEF300C150A5 = {
 			isa = PBXGroup;
 			children = (
@@ -128,7 +159,7 @@
 		7DB190022301F05800C150A5 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				7DB190052301F05800C150A5 /* Protocols */,
+				7D624675232CCF33008D60E8 /* Protocols */,
 				7DB190082301F05800C150A5 /* NGSStoryboardIdFactory.swift */,
 				7DB190032301F05800C150A5 /* NGSRouter.swift */,
 				7DB190042301F05800C150A5 /* NGSRouterConfig.swift */,
@@ -138,49 +169,18 @@
 			path = Sources;
 			sourceTree = "<group>";
 		};
-		7DB190052301F05800C150A5 /* Protocols */ = {
-			isa = PBXGroup;
-			children = (
-				7DB190062301F05800C150A5 /* NGSRouterType.swift */,
-				7DB190072301F05800C150A5 /* NGSNavigatable.swift */,
-			);
-			path = Protocols;
-			sourceTree = "<group>";
-		};
 		7DB1900A2301F05800C150A5 /* LightRoute */ = {
 			isa = PBXGroup;
 			children = (
+				7D624673232CCF06008D60E8 /* Protocols */,
+				7D624672232CCEF1008D60E8 /* TransitionsNodes */,
 				7DB1900B2301F05800C150A5 /* LightRoute.swift */,
-				7DB1900C2301F05800C150A5 /* TransitionNodes */,
 				7DB190122301F05800C150A5 /* UIViewController+Extension.swift */,
 				7DB190132301F05800C150A5 /* LightRouteErrors.swift */,
 				7DB190142301F05800C150A5 /* StoryboardFactory.swift */,
-				7DB190152301F05800C150A5 /* Protocols */,
 				7DB190192301F05800C150A5 /* EmbedSegue.swift */,
 			);
 			path = LightRoute;
-			sourceTree = "<group>";
-		};
-		7DB1900C2301F05800C150A5 /* TransitionNodes */ = {
-			isa = PBXGroup;
-			children = (
-				7DB1900D2301F05800C150A5 /* TransitionNode.swift */,
-				7DB1900E2301F05800C150A5 /* GenericTransitionNode.swift */,
-				7DB1900F2301F05800C150A5 /* SegueTransitionNode.swift */,
-				7DB190102301F05800C150A5 /* CustomTransitionNode.swift */,
-				7DB190112301F05800C150A5 /* CloseTransitionNode.swift */,
-			);
-			path = TransitionNodes;
-			sourceTree = "<group>";
-		};
-		7DB190152301F05800C150A5 /* Protocols */ = {
-			isa = PBXGroup;
-			children = (
-				7DB190162301F05800C150A5 /* StoryboardFactoryProtocol.swift */,
-				7DB190172301F05800C150A5 /* ViewContainerForEmbedSegue.swift */,
-				7DB190182301F05800C150A5 /* TransitionHandler.swift */,
-			);
-			path = Protocols;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
