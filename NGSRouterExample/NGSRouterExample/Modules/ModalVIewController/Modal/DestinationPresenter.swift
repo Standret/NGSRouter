@@ -22,7 +22,7 @@ class DestinationPresenter: NGSParamCloseNavigatable {
     private var _router: NGSRouterType
     
     var delegate: DestinationViewDelegate!
-    var closableObject: (String) -> Void = { _ in fatalError("Unimplemented") }
+    var closableObject = NGSCloseObject<String>()
     
     var parameter: String = ""
     var textForClose: String = ""

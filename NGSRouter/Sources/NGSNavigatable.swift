@@ -44,6 +44,28 @@ public protocol NGSParamNavigatable: NGSNavigatable {
     func prepare(parameter: Parameter)
 }
 
+///
+/// Represent object which use for close navigation
+///
+public struct NGSCloseObject<T> {
+    
+    public typealias CloseClosure = (T) -> Void
+    
+    public init() {
+        self.init(closeClosure: { _ in })
+    }
+    
+    init(closeClosure: @escaping CloseClosure) {
+        self.closeClosure = closeClosure
+    }
+    
+    func invoke(with parameter: T) {
+        closeClosure(parameter)
+    }
+    
+    private let closeClosure: CloseClosure
+}
+
 
 ///
 /// This protocol describe ability to close module with parameter
@@ -52,9 +74,7 @@ public protocol NGSCloseNavigatable: NGSNavigatable {
     
     associatedtype CloseObject
     
-    typealias NGSClosableObject = (CloseObject) -> Void
-    
-    var closableObject: NGSClosableObject { get set }
+    var closableObject: NGSCloseObject<CloseObject> { get set }
 }
 
 public typealias NGSParamCloseNavigatable = NGSParamNavigatable & NGSCloseNavigatable

@@ -147,7 +147,7 @@ open class NGSRouter: NGSRouterType {
             .to(preferred: typeNavigation.transtionStyle)
             .transition(animate: animated)
             .then({
-                $0.closableObject = closeCompletion
+                $0.closableObject = NGSCloseObject(closeClosure: closeCompletion)
                 $0.prepare()
                 return ()
             })
@@ -167,7 +167,7 @@ open class NGSRouter: NGSRouterType {
             .to(preferred: typeNavigation.transtionStyle)
             .transition(animate: animated)
             .then({
-                $0.closableObject = closeCompletion
+                $0.closableObject = NGSCloseObject(closeClosure: closeCompletion)
                 $0.prepare()
                 $0.prepare(parameter: parameter)
             })
@@ -188,7 +188,7 @@ open class NGSRouter: NGSRouterType {
         animated: Bool
         ) throws {
         
-        target.closableObject(parameter)
+        target.closableObject.invoke(with: parameter)
         
         try transitionHandler
             .closeCurrentModule()
