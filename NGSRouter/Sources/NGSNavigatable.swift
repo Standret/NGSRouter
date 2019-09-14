@@ -44,6 +44,7 @@ public protocol NGSParamNavigatable: NGSNavigatable {
     func prepare(parameter: Parameter)
 }
 
+
 ///
 /// This protocol describe ability to close module with parameter
 ///

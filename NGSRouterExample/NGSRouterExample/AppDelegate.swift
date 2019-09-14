@@ -16,6 +16,13 @@ enum Storyboard: String, NGSStoryboard {
     var name: String { return self.rawValue }
 }
 
+class AppStart: NGSAppStart {
+    
+    var startViewController: UIViewController {
+        return UIStoryboard(name: "Main", bundle: Bundle.main).instantiateInitialViewController()!
+    }
+}
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
@@ -25,6 +32,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         NGSRouterConfig.shared.registerStoryboardIdFactory(factory: NGSPresenterStoryboardIdFactory())
         NGSRouterConfig.shared.destinationSourceProperyName = "presenter"
+        NGSRouterConfig.shared.appStart = AppStart()
+        NGSRouterConfig.shared.start(appDelegate: self)
         
         NGSRouterAssember.shared.register(
             storyboard: Storyboard.main,

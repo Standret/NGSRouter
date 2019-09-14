@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 final public class NGSRouterConfig {
     
@@ -33,9 +34,24 @@ final public class NGSRouterConfig {
     public var destinationSourceProperyName: String = "presenter"
     
     ///
+    /// Determine custom appstart for application
+    ///
+    public var appStart: NGSAppStart?
+    
+    ///
     /// This function register new Startegy to get id for storyboard instantinate
     ///
     public func registerStoryboardIdFactory(factory: NGSStoryboardIdFactory) {
         storyboardIdFactory = factory
+    }
+    
+    ///
+    /// Function init start view controller and prepare routing
+    ///
+    public func start(appDelegate: UIApplicationDelegate) {
+        assert(appStart != nil, "appStart should be set")
+        appDelegate.window??.rootViewController = appStart!.startViewController
+        appDelegate.window??.makeKeyAndVisible()
+        
     }
 }
