@@ -226,3 +226,31 @@ open class NGSRouter: NGSRouterType {
         }
     }
 }
+
+public extension NGSRouter {
+    
+    ///
+    /// Instantinate view controller for given key
+    ///
+    static func instantinate<Destination: NGSNavigatable>(of _: Destination.Type) throws -> UIViewController {
+        
+        var viewController: UIViewController
+        
+        if let storyboardData = NGSRouterAssember.shared.fetchStoryboard(navigatable: Destination.self) {
+            viewController = UIStoryboard(name: storyboardData.storyboard, bundle: nil)
+                .instantiateViewController(withIdentifier: storyboardData.storyboardId)
+        }
+        else if let vcFactory = NGSRouterAssember.shared.fetchVCRegistration(navigatable: Destination.self) {
+            viewController = vcFactory()
+        }
+        else {
+            throw NGSError.notRegistered
+        }
+        
+        if let configurator = NGSRouterAssember.shared.fetchConfigurator(navigatable: Destination.self) {
+            configurator(viewController)
+        }
+        
+        return viewController
+    }
+}

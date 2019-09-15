@@ -50,8 +50,8 @@ final public class NGSRouterConfig {
     ///
     public func start(appDelegate: UIApplicationDelegate) {
         assert(appStart != nil, "appStart should be set")
-        appDelegate.window??.rootViewController = appStart!.startViewController
-        appDelegate.window??.makeKeyAndVisible()
+        appDelegate.window!!.rootViewController = appStart!.startViewController
+        appDelegate.window!!.makeKeyAndVisible()
         
     }
 }

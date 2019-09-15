@@ -125,3 +125,131 @@ public protocol NGSRouterType: class {
         animated: Bool
         ) throws
 }
+
+extension NGSRouterType {
+    
+    ///
+    /// Load new module to screen based on generic navigation type
+    /// - Parameter to: represent target Destination
+    /// - Parameter typeNavigation: naviagtion style
+    /// - Parameter animated: animated of transition
+    ///
+    /// - Important: you have to register module for navigation before usage
+    ///
+    func navigate<Destination: NGSNavigatable>(
+        to _: Destination.Type,
+        typeNavigation: NGSTransitionStyle = .push,
+        animated: Bool = true
+        ) throws {
+        
+        try self.navigate(
+            to: Destination.self,
+            typeNavigation: typeNavigation,
+            animated: animated
+        )
+    }
+    
+    ///
+    /// Load new module to screen based on generic navigation type
+    /// - Parameter to: represent target Destination
+    /// - Parameter parameter: navigation parameter which pass to next module
+    /// - Parameter typeNavigation: naviagtion style
+    /// - Parameter animated: animated of transition
+    ///
+    /// - Important: you have to register module for navigation before usage
+    ///
+    func navigate<Destination: NGSParamNavigatable>(
+        to _: Destination.Type,
+        parameter: Destination.Parameter,
+        typeNavigation: NGSTransitionStyle = .push,
+        animated: Bool = true
+        ) throws {
+        
+        try self.navigate(
+            to: Destination.self,
+            parameter: parameter,
+            typeNavigation: typeNavigation,
+            animated: animated
+        )
+    }
+    
+    ///
+    /// Load new module to screen based on generic navigation type with close closure
+    /// - Parameter to: represent target Destination
+    /// - Parameter typeNavigation: naviagtion style
+    /// - Parameter animated: animated of transition
+    /// - Parameter closeCompletion: represent closure which invokes before close opened module
+    ///
+    /// - Important: you have to register module for navigation before usage
+    ///
+    func navigate<Destination: NGSCloseNavigatable>(
+        to _: Destination.Type,
+        typeNavigation: NGSTransitionStyle = .push,
+        animated: Bool = true,
+        closeCompletion: @escaping CloseCompletition<Destination.CloseObject>
+        ) throws {
+        
+        try self.navigate(
+            to: Destination.self,
+            typeNavigation: typeNavigation,
+            animated: animated,
+            closeCompletion: closeCompletion
+        )
+    }
+    
+    ///
+    /// Load new module to screen based on generic navigation type with close closure
+    /// - Parameter to: represent target Destination
+    /// - Parameter parameter: navigation parameter which pass to next module
+    /// - Parameter typeNavigation: naviagtion style
+    /// - Parameter animated: animated of transition
+    /// - Parameter closeCompletion: represent closure which invokes before close opened module
+    ///
+    /// - Important: you have to register module for navigation before usage
+    ///
+    func navigate<Destination: NGSParamCloseNavigatable>(
+        to _: Destination.Type,
+        parameter: Destination.Parameter,
+        typeNavigation: NGSTransitionStyle = .push,
+        animated: Bool = true,
+        closeCompletion: @escaping CloseCompletition<Destination.CloseObject>
+        ) throws {
+        
+        try self.navigate(
+            to: Destination.self,
+            parameter: parameter,
+            typeNavigation: typeNavigation,
+            animated: animated,
+            closeCompletion: closeCompletion
+        )
+    }
+    
+    // MARK: - CLOSE
+    
+    ///
+    /// Close current module
+    /// - Parameter animated: animated of transition
+    ///
+    func close(animated: Bool = true) throws {
+        try self.close(animated: animated)
+    }
+    
+    ///
+    /// Close current module and pass parameter back to calling module
+    /// - Parameter target: represent current module
+    /// - Parameter parameter: close parameter which pass to calling module
+    /// - Parameter animated: animated of transition
+    ///
+    func close<Destination: NGSCloseNavigatable>(
+        target: Destination,
+        parameter: Destination.CloseObject,
+        animated: Bool = true
+        ) throws {
+        
+        try self.close(
+            target: target,
+            parameter: parameter,
+            animated: animated
+        )
+    }
+}
