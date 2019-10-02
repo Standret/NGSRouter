@@ -9,13 +9,6 @@
 import Foundation
 import UIKit
 
-public protocol NGSConfiguratable {
-    
-    associatedtype Target
-    
-    func configure(target: Target)
-}
-
 final public class NGSRouterAssember {
     
     public typealias NGSVCFactoryResolver = () -> UIViewController
@@ -45,7 +38,7 @@ final public class NGSRouterAssember {
         storyboardRegistration[targetKey] = storyboard.name
     }
     
-    public func register<Navigatable: NGSNavigatable, Destinatable: NGSConfiguratable>(
+    public func register<Navigatable: NGSNavigatable, Destinatable>(
         storyboard: NGSStoryboard,
         navigatable: Navigatable.Type,
         conigurator: @escaping NGSDestinatableInjector<Destinatable>
@@ -75,7 +68,7 @@ final public class NGSRouterAssember {
         vcRegistration[targetKey] = factory
     }
     
-    public func register<Navigatable: NGSNavigatable, Destinatable: NGSConfiguratable>(
+    public func register<Navigatable: NGSNavigatable, Destinatable>(
         navigatable _: Navigatable.Type,
         factory: @escaping NGSVCFactoryResolver,
         conigurator: @escaping NGSDestinatableInjector<Destinatable>
@@ -119,7 +112,7 @@ final public class NGSRouterAssember {
         return NGSRouterConfig.shared.storyboardIdFactory.getStoryboardId(object: Navigatable.self)
     }
     
-    private func registerConfigurator<Navigatable: NGSNavigatable, Destinatable: NGSConfiguratable>(
+    private func registerConfigurator<Navigatable: NGSNavigatable, Destinatable>(
         navigatable _: Navigatable.Type,
         conigurator: @escaping NGSDestinatableInjector<Destinatable>
         ) {
@@ -134,7 +127,7 @@ final public class NGSRouterAssember {
                 conigurator(output)
             }
             else {
-                fatalError("Destination VC: \(type(of: output)) does not implement protocol NGSConfigurable.")
+                fatalError("Destination VC: \(type(of: output)) expect \(type(of: Destinatable.self))")
             }
         }
     }

@@ -66,37 +66,41 @@ open class NGSRouter: NGSRouterType {
         storyboard: NGSStoryboard,
         to _: Destination.Type,
         parameter: Destination.Parameter
-        ) throws {
+    ) {
         
-        try transitionHandler
-            .forStoryboard(factory: getTarfetStoryboardFactory(storyboard: storyboard, to: ""), to: Destination.self)
-            .applyConfigurator(navigatable: Destination.self)
-            .selector(selectorName)
-            .customTransition()
-            .transition({ (_, destination) in
-                UIApplication.shared.keyWindow?.rootViewController = destination
-            })
-            .then({
-                $0.prepare()
-                $0.prepare(parameter: parameter)
-                return ()
-            })
+        executer {
+            try transitionHandler
+                .forStoryboard(factory: getTarfetStoryboardFactory(storyboard: storyboard, to: ""), to: Destination.self)
+                .applyConfigurator(navigatable: Destination.self)
+                .selector(selectorName)
+                .customTransition()
+                .transition({ (_, destination) in
+                    UIApplication.shared.keyWindow?.rootViewController = destination
+                })
+                .then({
+                    $0.prepare()
+                    $0.prepare(parameter: parameter)
+                    return ()
+                })
+        }
     }
     
     open func loadStoryboard<Destination: NGSNavigatable>(
         to _: Destination.Type,
         storyboard: NGSStoryboard
-        ) throws {
+    ) {
         
-        try transitionHandler
-            .forStoryboard(factory: getTarfetStoryboardFactory(storyboard: storyboard, to: ""), to: NGSNavigatable.self)
-            .applyConfigurator(navigatable: Destination.self)
-            .selector(selectorName)
-            .customTransition()
-            .transition({ (_, destination) in
-                UIApplication.shared.keyWindow?.rootViewController = destination
-            })
-            .then({ $0.prepare() })
+        executer {
+            try transitionHandler
+                .forStoryboard(factory: getTarfetStoryboardFactory(storyboard: storyboard, to: ""), to: NGSNavigatable.self)
+                .applyConfigurator(navigatable: Destination.self)
+                .selector(selectorName)
+                .customTransition()
+                .transition({ (_, destination) in
+                    UIApplication.shared.keyWindow?.rootViewController = destination
+                })
+                .then({ $0.prepare() })
+        }
     }
     
     // MARK: - NAVIGATE
@@ -105,14 +109,16 @@ open class NGSRouter: NGSRouterType {
         to _: Destination.Type,
         typeNavigation: NGSTransitionStyle,
         animated: Bool
-        ) throws {
+    ) {
         
-        try getTransitionNode(destination: Destination.self)
-            .applyConfigurator(navigatable: Destination.self)
-            .selector(selectorName)
-            .to(preferred: typeNavigation.transtionStyle)
-            .transition(animate: animated)
-            .then({ $0.prepare() })
+        executer {
+            try getTransitionNode(destination: Destination.self)
+                .applyConfigurator(navigatable: Destination.self)
+                .selector(selectorName)
+                .to(preferred: typeNavigation.transtionStyle)
+                .transition(animate: animated)
+                .then({ $0.prepare() })
+        }
     }
     
     open func navigate<Destination: NGSParamNavigatable>(
@@ -120,18 +126,20 @@ open class NGSRouter: NGSRouterType {
         parameter: Destination.Parameter,
         typeNavigation: NGSTransitionStyle,
         animated: Bool
-        ) throws {
+    ) {
         
-        try getTransitionNode(destination: Destination.self)
-            .applyConfigurator(navigatable: Destination.self)
-            .selector(selectorName)
-            .to(preferred: typeNavigation.transtionStyle)
-            .transition(animate: animated)
-            .then({
-                $0.prepare()
-                $0.prepare(parameter: parameter)
-                return ()
-            })
+        executer {
+            try getTransitionNode(destination: Destination.self)
+                .applyConfigurator(navigatable: Destination.self)
+                .selector(selectorName)
+                .to(preferred: typeNavigation.transtionStyle)
+                .transition(animate: animated)
+                .then({
+                    $0.prepare()
+                    $0.prepare(parameter: parameter)
+                    return ()
+                })
+        }
     }
     
     public func navigate<Destination: NGSCloseNavigatable>(
@@ -139,18 +147,20 @@ open class NGSRouter: NGSRouterType {
         typeNavigation: NGSTransitionStyle,
         animated: Bool,
         closeCompletion: @escaping CloseCompletition<Destination.CloseObject>
-        ) throws {
+    ) {
         
-        try getTransitionNode(destination: Destination.self)
-            .applyConfigurator(navigatable: Destination.self)
-            .selector(selectorName)
-            .to(preferred: typeNavigation.transtionStyle)
-            .transition(animate: animated)
-            .then({
-                $0.closableObject = NGSCloseObject(closeClosure: closeCompletion)
-                $0.prepare()
-                return ()
-            })
+        executer {
+            try getTransitionNode(destination: Destination.self)
+                .applyConfigurator(navigatable: Destination.self)
+                .selector(selectorName)
+                .to(preferred: typeNavigation.transtionStyle)
+                .transition(animate: animated)
+                .then({
+                    $0.closableObject = NGSCloseObject(closeClosure: closeCompletion)
+                    $0.prepare()
+                    return ()
+                })
+        }
     }
     
     public func navigate<Destination: NGSParamCloseNavigatable>(
@@ -159,41 +169,47 @@ open class NGSRouter: NGSRouterType {
         typeNavigation: NGSTransitionStyle,
         animated: Bool,
         closeCompletion: @escaping CloseCompletition<Destination.CloseObject>
-        ) throws {
-
-        try getTransitionNode(destination: Destination.self)
-            .applyConfigurator(navigatable: Destination.self)
-            .selector(selectorName)
-            .to(preferred: typeNavigation.transtionStyle)
-            .transition(animate: animated)
-            .then({
-                $0.closableObject = NGSCloseObject(closeClosure: closeCompletion)
-                $0.prepare()
-                $0.prepare(parameter: parameter)
-            })
+    ) {
+        
+        executer {
+            try getTransitionNode(destination: Destination.self)
+                .applyConfigurator(navigatable: Destination.self)
+                .selector(selectorName)
+                .to(preferred: typeNavigation.transtionStyle)
+                .transition(animate: animated)
+                .then({
+                    $0.closableObject = NGSCloseObject(closeClosure: closeCompletion)
+                    $0.prepare()
+                    $0.prepare(parameter: parameter)
+                })
+        }
     }
     
     // MARK: - CLOSE
     
-    open func close(animated: Bool) throws {
-        try transitionHandler
-            .closeCurrentModule()
-            .transition(animate: animated)
-            .perform()
+    open func close(animated: Bool) {
+        executer {
+            try transitionHandler
+                .closeCurrentModule()
+                .transition(animate: animated)
+                .perform()
+        }
     }
     
     open func close<Destination: NGSCloseNavigatable>(
         target: Destination,
         parameter: Destination.CloseObject,
         animated: Bool
-        ) throws {
+    ) {
         
         target.closableObject.invoke(with: parameter)
         
-        try transitionHandler
-            .closeCurrentModule()
-            .transition(animate: animated)
-            .perform()
+        executer {
+            try transitionHandler
+                .closeCurrentModule()
+                .transition(animate: animated)
+                .perform()
+        }
     }
     
     internal func getTarfetStoryboardFactory(storyboard: NGSStoryboard, to name: String) -> StoryboardFactory {
@@ -211,7 +227,7 @@ open class NGSRouter: NGSRouterType {
                         storyboardName: storyboardData.storyboard,
                         bundle: Bundle.main,
                         restorationId: storyboardData.storyboardId
-                ), to: Navigatable.self
+                    ), to: Navigatable.self
             )
         }
         else if let vcFactory = NGSRouterAssember.shared.fetchVCRegistration(navigatable: Navigatable.self) {
@@ -230,27 +246,83 @@ open class NGSRouter: NGSRouterType {
 public extension NGSRouter {
     
     ///
-    /// Instantinate view controller for given key
+    /// Instantiate view controller for given key
     ///
-    static func instantinate<Destination: NGSNavigatable>(of _: Destination.Type) throws -> UIViewController {
+    static func instantiate<Destination: NGSNavigatable>(of _: Destination.Type) -> UIViewController {
         
+        var result: UIViewController
         var viewController: UIViewController
         
         if let storyboardData = NGSRouterAssember.shared.fetchStoryboard(navigatable: Destination.self) {
-            viewController = UIStoryboard(name: storyboardData.storyboard, bundle: nil)
+            result = UIStoryboard(name: storyboardData.storyboard, bundle: nil)
                 .instantiateViewController(withIdentifier: storyboardData.storyboardId)
+            
+            if result is UINavigationController {
+                viewController = (result as! UINavigationController).topViewController ?? result
+            }
+            else {
+                viewController = result
+            }
         }
         else if let vcFactory = NGSRouterAssember.shared.fetchVCRegistration(navigatable: Destination.self) {
-            viewController = vcFactory()
+            result = vcFactory()
+            viewController = result
         }
         else {
-            throw NGSError.notRegistered
+            fatalError("Target \(type(of: Destination.self)) is not registered")
         }
         
         if let configurator = NGSRouterAssember.shared.fetchConfigurator(navigatable: Destination.self) {
             configurator(viewController)
         }
         
-        return viewController
+        return result
+    }
+    
+    ///
+    /// Instantiate view controller for given key
+    ///
+    static func instantiateEntryPoint<Destination: NGSNavigatable>(of _: Destination.Type) -> UIViewController {
+        
+        var result: UIViewController
+        var viewController: UIViewController
+        
+        if let storyboardData = NGSRouterAssember.shared.fetchStoryboard(navigatable: Destination.self) {
+            result = UIStoryboard(name: storyboardData.storyboard, bundle: nil)
+                .instantiateInitialViewController()!
+            
+            if result is UINavigationController {
+                viewController = (result as! UINavigationController).topViewController ?? result
+            }
+            else {
+                viewController = result
+            }
+        }
+        else if let vcFactory = NGSRouterAssember.shared.fetchVCRegistration(navigatable: Destination.self) {
+            result = vcFactory()
+            viewController = result
+        }
+        else {
+            fatalError("Target \(type(of: Destination.self)) is not registered")
+        }
+        
+        if let configurator = NGSRouterAssember.shared.fetchConfigurator(navigatable: Destination.self) {
+            configurator(viewController)
+        }
+        
+        return result
+    }
+}
+
+fileprivate extension NGSRouter {
+    
+    func executer(action: () throws -> Void) {
+        
+        do {
+            try action()
+        }
+        catch {
+            NGSRouterConfig.shared.errorHandler?(error)
+        }
     }
 }

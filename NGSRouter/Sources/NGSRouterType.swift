@@ -25,7 +25,7 @@ public protocol NGSRouterType: class {
     func loadStoryboard<Destination: NGSNavigatable>(
         to _: Destination.Type,
         storyboard: NGSStoryboard
-        ) throws
+        )
     
     ///
     /// Load new storyboard and made init VC as root
@@ -37,7 +37,7 @@ public protocol NGSRouterType: class {
         storyboard: NGSStoryboard,
         to _: Destination.Type,
         parameter: Destination.Parameter
-        ) throws
+        )
     
     // MARK: - NAVIGATION
     
@@ -53,7 +53,7 @@ public protocol NGSRouterType: class {
         to _: Destination.Type,
         typeNavigation: NGSTransitionStyle,
         animated: Bool
-        ) throws
+        )
     
     ///
     /// Load new module to screen based on generic navigation type
@@ -69,7 +69,7 @@ public protocol NGSRouterType: class {
         parameter: Destination.Parameter,
         typeNavigation: NGSTransitionStyle,
         animated: Bool
-        ) throws
+        )
     
     ///
     /// Load new module to screen based on generic navigation type with close closure
@@ -85,7 +85,7 @@ public protocol NGSRouterType: class {
         typeNavigation: NGSTransitionStyle,
         animated: Bool,
         closeCompletion: @escaping CloseCompletition<Destination.CloseObject>
-        ) throws
+        )
     
     ///
     /// Load new module to screen based on generic navigation type with close closure
@@ -103,7 +103,7 @@ public protocol NGSRouterType: class {
         typeNavigation: NGSTransitionStyle,
         animated: Bool,
         closeCompletion: @escaping CloseCompletition<Destination.CloseObject>
-        ) throws
+        )
     
     // MARK: - CLOSE
     
@@ -111,7 +111,7 @@ public protocol NGSRouterType: class {
     /// Close current module
     /// - Parameter animated: animated of transition
     ///
-    func close(animated: Bool) throws
+    func close(animated: Bool)
     
     ///
     /// Close current module and pass parameter back to calling module
@@ -123,7 +123,7 @@ public protocol NGSRouterType: class {
         target: Destination,
         parameter: Destination.CloseObject,
         animated: Bool
-        ) throws
+        )
 }
 
 extension NGSRouterType {
@@ -140,9 +140,9 @@ extension NGSRouterType {
         to _: Destination.Type,
         typeNavigation: NGSTransitionStyle = .push,
         animated: Bool = true
-        ) throws {
+        ) {
         
-        try self.navigate(
+        self.navigate(
             to: Destination.self,
             typeNavigation: typeNavigation,
             animated: animated
@@ -163,9 +163,9 @@ extension NGSRouterType {
         parameter: Destination.Parameter,
         typeNavigation: NGSTransitionStyle = .push,
         animated: Bool = true
-        ) throws {
+        ) {
         
-        try self.navigate(
+        self.navigate(
             to: Destination.self,
             parameter: parameter,
             typeNavigation: typeNavigation,
@@ -187,9 +187,9 @@ extension NGSRouterType {
         typeNavigation: NGSTransitionStyle = .push,
         animated: Bool = true,
         closeCompletion: @escaping CloseCompletition<Destination.CloseObject>
-        ) throws {
+        ) {
         
-        try self.navigate(
+        self.navigate(
             to: Destination.self,
             typeNavigation: typeNavigation,
             animated: animated,
@@ -213,9 +213,9 @@ extension NGSRouterType {
         typeNavigation: NGSTransitionStyle = .push,
         animated: Bool = true,
         closeCompletion: @escaping CloseCompletition<Destination.CloseObject>
-        ) throws {
+        ) {
         
-        try self.navigate(
+        self.navigate(
             to: Destination.self,
             parameter: parameter,
             typeNavigation: typeNavigation,
@@ -230,8 +230,8 @@ extension NGSRouterType {
     /// Close current module
     /// - Parameter animated: animated of transition
     ///
-    func close(animated: Bool = true) throws {
-        try self.close(animated: animated)
+    func close(animated: Bool = true) {
+        self.close(animated: animated)
     }
     
     ///
@@ -244,9 +244,9 @@ extension NGSRouterType {
         target: Destination,
         parameter: Destination.CloseObject,
         animated: Bool = true
-        ) throws {
+        ) {
         
-        try self.close(
+        self.close(
             target: target,
             parameter: parameter,
             animated: animated

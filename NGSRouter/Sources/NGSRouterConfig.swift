@@ -11,6 +11,8 @@ import UIKit
 
 final public class NGSRouterConfig {
     
+    public typealias ErrorHandler = (Error) -> Void
+    
     private init() { }
     
     public static var shared = NGSRouterConfig()
@@ -43,6 +45,26 @@ final public class NGSRouterConfig {
     ///
     public func registerStoryboardIdFactory(factory: NGSStoryboardIdFactory) {
         storyboardIdFactory = factory
+    }
+    
+    ///
+    /// Handling error during navigation, by default setted print to console
+    ///
+    public var errorHandler: ErrorHandler? = { error in
+        
+        if let error = error as? LightRouteError {
+            switch error {
+            case .viewControllerWasNil(let message):
+                NSLog("[NGSRouter] error during navigation: \(message)")
+            default:
+                NSLog("[NGSRouter] catched unexcpected error during naviation: -- \(error)")
+                assertionFailure("catched unexcpected error during naviation: -- \(error)")
+            }
+        }
+        else {
+            NSLog("[NGSRouter] catched unexcpected error during naviation: -- \(error)")
+            assertionFailure("catched unexcpected error during naviation: -- \(error)")
+        }
     }
     
     ///
