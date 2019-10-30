@@ -59,7 +59,7 @@ public struct NGSCloseObject<T> {
         self.closeClosure = closeClosure
     }
     
-    func invoke(with parameter: T) {
+    public func invoke(with parameter: T) {
         closeClosure(parameter)
     }
     

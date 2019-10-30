@@ -19,6 +19,7 @@ public enum NGSTransitionStyle {
     case push
     case modal
     case crossDisolve
+    case formSheet
     
     case custom(TransitionStyle)
 }
@@ -30,9 +31,11 @@ public extension NGSTransitionStyle {
         case .push:
             return .navigation(style: .push)
         case .modal:
-            return .modal(transition: .coverVertical, presentation: .overFullScreen)
+            return .modal(transition: .coverVertical, presentation: .fullScreen)
         case .crossDisolve:
-            return .modal(transition: .crossDissolve, presentation: .overFullScreen)
+            return .modal(transition: .crossDissolve, presentation: .fullScreen)
+        case .formSheet:
+            return .modal(transition: .coverVertical, presentation: .formSheet)
         case .custom(let style):
             return style
         }
@@ -52,7 +55,7 @@ fileprivate extension TransitionNode {
 
 open class NGSRouter: NGSRouterType {
     
-    private(set) public var transitionHandler: TransitionHandler
+    private(set) public unowned var transitionHandler: TransitionHandler
     
     private var selectorName: String { return NGSRouterConfig.shared.destinationSourceProperyName }
     
