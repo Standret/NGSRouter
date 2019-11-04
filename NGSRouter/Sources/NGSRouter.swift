@@ -46,6 +46,12 @@ fileprivate extension TransitionNode {
     
     func applyConfigurator<Navigatable: NGSNavigatable>(navigatable _: Navigatable.Type) throws -> TransitionNode {
         return try self.apply(to: { destination in
+            
+            var viewController = destination
+            if viewController is UINavigationController {
+                viewController = (viewController as! UINavigationController).topViewController ?? viewController
+            }
+            
             if let configurator = NGSRouterAssember.shared.fetchConfigurator(navigatable: Navigatable.self) {
                 configurator(destination)
             }
