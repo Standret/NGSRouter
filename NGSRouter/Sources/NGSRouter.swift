@@ -53,7 +53,7 @@ fileprivate extension TransitionNode {
             }
             
             if let configurator = NGSRouterAssember.shared.fetchConfigurator(navigatable: Navigatable.self) {
-                configurator(destination)
+                configurator(viewController)
             }
         })
     }
