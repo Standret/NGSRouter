@@ -9,7 +9,7 @@
 import UIKit
 import NGSRouter
 
-class DestinationViewController: UIViewController, DestinationViewDelegate, NGSConfiguratable {
+class DestinationViewController: UIViewController, DestinationViewDelegate {
     
     var presenter: DestinationPresenter!
     
