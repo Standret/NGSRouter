@@ -52,7 +52,7 @@ fileprivate extension TransitionNode {
                 viewController = (viewController as! UINavigationController).topViewController ?? viewController
             }
             
-            if let configurator = NGSRouterAssember.shared.fetchConfigurator(navigatable: Navigatable.self) {
+            if let configurator = NGSRouterAssember.default.fetchConfigurator(Navigatable.self) {
                 configurator(viewController)
             }
         })
@@ -229,7 +229,7 @@ open class NGSRouter: NGSRouterType {
     
     internal func getTransitionNode<Navigatable: NGSNavigatable>(destination: Navigatable.Type) throws -> TransitionNode<Navigatable> {
         
-        if let storyboardData = NGSRouterAssember.shared.fetchStoryboard(navigatable: Navigatable.self) {
+        if let storyboardData = NGSRouterAssember.default.fetchStoryboard(Navigatable.self) {
             return try transitionHandler
                 .forStoryboard(
                     factory: StoryboardFactory(
@@ -239,7 +239,7 @@ open class NGSRouter: NGSRouterType {
                     ), to: Navigatable.self
             )
         }
-        else if let vcFactory = NGSRouterAssember.shared.fetchVCRegistration(navigatable: Navigatable.self) {
+        else if let vcFactory = NGSRouterAssember.default.fetchVCRegistration(Navigatable.self) {
             return TransitionNode(
                 root: transitionHandler as! UIViewController,
                 destination: vcFactory(),
@@ -262,7 +262,7 @@ public extension NGSRouter {
         var result: UIViewController
         var viewController: UIViewController
         
-        if let storyboardData = NGSRouterAssember.shared.fetchStoryboard(navigatable: Destination.self) {
+        if let storyboardData = NGSRouterAssember.default.fetchStoryboard(Destination.self) {
             result = UIStoryboard(name: storyboardData.storyboard, bundle: nil)
                 .instantiateViewController(withIdentifier: storyboardData.storyboardId)
             
@@ -273,7 +273,7 @@ public extension NGSRouter {
                 viewController = result
             }
         }
-        else if let vcFactory = NGSRouterAssember.shared.fetchVCRegistration(navigatable: Destination.self) {
+        else if let vcFactory = NGSRouterAssember.default.fetchVCRegistration(Destination.self) {
             result = vcFactory()
             viewController = result
         }
@@ -281,7 +281,7 @@ public extension NGSRouter {
             fatalError("Target \(type(of: Destination.self)) is not registered")
         }
         
-        if let configurator = NGSRouterAssember.shared.fetchConfigurator(navigatable: Destination.self) {
+        if let configurator = NGSRouterAssember.default.fetchConfigurator(Destination.self) {
             configurator(viewController)
         }
         
@@ -289,14 +289,14 @@ public extension NGSRouter {
     }
     
     ///
-    /// Instantiate view controller for given key
+    /// Instantiate view controller
     ///
     static func instantiateEntryPoint<Destination: NGSNavigatable>(of _: Destination.Type) -> UIViewController {
         
         var result: UIViewController
         var viewController: UIViewController
         
-        if let storyboardData = NGSRouterAssember.shared.fetchStoryboard(navigatable: Destination.self) {
+        if let storyboardData = NGSRouterAssember.default.fetchStoryboard(Destination.self) {
             result = UIStoryboard(name: storyboardData.storyboard, bundle: nil)
                 .instantiateInitialViewController()!
             
@@ -307,7 +307,7 @@ public extension NGSRouter {
                 viewController = result
             }
         }
-        else if let vcFactory = NGSRouterAssember.shared.fetchVCRegistration(navigatable: Destination.self) {
+        else if let vcFactory = NGSRouterAssember.default.fetchVCRegistration(Destination.self) {
             result = vcFactory()
             viewController = result
         }
@@ -315,7 +315,7 @@ public extension NGSRouter {
             fatalError("Target \(type(of: Destination.self)) is not registered")
         }
         
-        if let configurator = NGSRouterAssember.shared.fetchConfigurator(navigatable: Destination.self) {
+        if let configurator = NGSRouterAssember.default.fetchConfigurator(Destination.self) {
             configurator(viewController)
         }
         

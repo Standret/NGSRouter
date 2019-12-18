@@ -42,7 +42,7 @@ class ViewController: UIViewController {
     
     private func makeNavigation(with type: NGSTransitionStyle) {
         if swtchParameter.isOn && swtchtCloseCallback.isOn {
-            try! _router.navigate(
+            _router.navigate(
                 to: DestinationPresenter.self,
                 parameter: tfText.text!,
                 typeNavigation: type,
@@ -51,7 +51,7 @@ class ViewController: UIViewController {
             )
         }
         else if swtchParameter.isOn {
-            try! _router.navigate(
+            _router.navigate(
                 to: DestinationPresenter.self,
                 parameter: tfText.text!,
                 typeNavigation: type,
@@ -59,7 +59,7 @@ class ViewController: UIViewController {
             )
         }
         else if swtchtCloseCallback.isOn {
-            try! _router.navigate(
+            _router.navigate(
                 to: DestinationPresenter.self,
                 typeNavigation: type,
                 animated: swtchAnimated.isOn,
@@ -67,7 +67,7 @@ class ViewController: UIViewController {
             )
         }
         else {
-            try! _router.navigate(
+            _router.navigate(
                 to: DestinationPresenter.self,
                 typeNavigation: type,
                 animated: swtchAnimated.isOn

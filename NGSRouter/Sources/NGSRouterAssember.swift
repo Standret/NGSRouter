@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-final public class NGSRouterAssember {
+open class NGSRouterAssember {
     
     public typealias NGSVCFactoryResolver = () -> UIViewController
     public typealias NGSStoryboardData = (storyboard: String, storyboardId: String)
@@ -20,72 +20,76 @@ final public class NGSRouterAssember {
     private var storyboardRegistration = [String: String]()
     private var vcRegistration = [String: NGSVCFactoryResolver]()
     private var configuratorRegistration = [String: NGSApplier]()
+    
+    public private(set) static var `default` = NGSRouterAssember()
 
-    private init() { }
+    public init() { }
     
-    public static var shared = NGSRouterAssember()
-    
-    public func register<Navigatable: NGSNavigatable>(
-        storyboard: NGSStoryboard,
-        navigatable: Navigatable.Type
+    public func replaceDefaultAssembler(_ assembler: NGSRouterAssember) {
+        NGSRouterAssember.default = assembler
+    }
+        
+    open func register<Navigatable: NGSNavigatable>(
+        _ navigatable: Navigatable.Type,
+        storyboard: NGSStoryboard
         ) {
         
         let targetKey = getTargetVCId(to: Navigatable.self)
         guard !storyboardRegistration.keys.contains(targetKey) else {
-            fatalError("Attempt registration \(type(of: Navigatable.self)) the destination which was already registered.")
+            fatalError("Attempt registration \(type(of: Navigatable.self)) the destination was already registered.")
         }
         
         storyboardRegistration[targetKey] = storyboard.name
     }
     
-    public func register<Navigatable: NGSNavigatable, Destinatable>(
+    open func register<Navigatable: NGSNavigatable, Destinatable>(
+        _ navigatable: Navigatable.Type,
         storyboard: NGSStoryboard,
-        navigatable: Navigatable.Type,
         conigurator: @escaping NGSDestinatableInjector<Destinatable>
         ) {
         
         self.register(
-            storyboard: storyboard,
-            navigatable: navigatable.self
+            Navigatable.self,
+            storyboard: storyboard
         )
         
         self.registerConfigurator(
-            navigatable: Navigatable.self,
+            Navigatable.self,
             conigurator: conigurator
         )
     }
     
-    public func register<Navigatable: NGSNavigatable>(
-        navigatable _: Navigatable.Type,
+    open func register<Navigatable: NGSNavigatable>(
+        _: Navigatable.Type,
         factory: @escaping NGSVCFactoryResolver
         ) {
         
         let targetKey = getTargetVCId(to: Navigatable.self)
         guard !vcRegistration.keys.contains(targetKey) else {
-            fatalError("Attempt registration \(type(of: Navigatable.self)) the destination which was already registered.")
+            fatalError("Attempt registration \(type(of: Navigatable.self)) the destination was already registered.")
         }
         
         vcRegistration[targetKey] = factory
     }
     
-    public func register<Navigatable: NGSNavigatable, Destinatable>(
-        navigatable _: Navigatable.Type,
+    open func register<Navigatable: NGSNavigatable, Destinatable>(
+        _: Navigatable.Type,
         factory: @escaping NGSVCFactoryResolver,
         conigurator: @escaping NGSDestinatableInjector<Destinatable>
         ) {
         
         self.register(
-            navigatable: Navigatable.self,
+            Navigatable.self,
             factory: factory
         )
         
         self.registerConfigurator(
-            navigatable: Navigatable.self,
+            Navigatable.self,
             conigurator: conigurator
         )
     }
     
-    internal func fetchStoryboard<Navigatable: NGSNavigatable>(navigatable _: Navigatable.Type) -> NGSStoryboardData? {
+    internal func fetchStoryboard<Navigatable: NGSNavigatable>(_: Navigatable.Type) -> NGSStoryboardData? {
         
         let storyboardId = getTargetVCId(to: Navigatable.self)
         if let stroyboardName = storyboardRegistration[storyboardId] {
@@ -95,13 +99,13 @@ final public class NGSRouterAssember {
         return nil
     }
     
-    internal func fetchVCRegistration<Navigatable: NGSNavigatable>(navigatable _: Navigatable.Type) -> NGSVCFactoryResolver? {
+    internal func fetchVCRegistration<Navigatable: NGSNavigatable>(_: Navigatable.Type) -> NGSVCFactoryResolver? {
         
         let storyboardId = getTargetVCId(to: Navigatable.self)
         return vcRegistration[storyboardId]
     }
     
-    internal func fetchConfigurator<Navigatable: NGSNavigatable>(navigatable _: Navigatable.Type) -> NGSApplier? {
+    internal func fetchConfigurator<Navigatable: NGSNavigatable>(_: Navigatable.Type) -> NGSApplier? {
         
         let storyboardId = getTargetVCId(to: Navigatable.self)
         return configuratorRegistration[storyboardId]
@@ -113,7 +117,7 @@ final public class NGSRouterAssember {
     }
     
     private func registerConfigurator<Navigatable: NGSNavigatable, Destinatable>(
-        navigatable _: Navigatable.Type,
+        _: Navigatable.Type,
         conigurator: @escaping NGSDestinatableInjector<Destinatable>
         ) {
         
@@ -130,5 +134,47 @@ final public class NGSRouterAssember {
                 fatalError("Destination VC: \(type(of: output)) expect \(type(of: Destinatable.self))")
             }
         }
+    }
+    
+    // MARK: - deprecated
+    
+    @available(swift, deprecated: 5, obsoleted: 6, renamed: "default")
+    public static var shared: NGSRouterAssember { return NGSRouterAssember.default }
+    
+    @available(swift, deprecated: 5, obsoleted: 6, renamed: "register(_:navigatable:)")
+    public func register<Navigatable: NGSNavigatable>(
+        storyboard: NGSStoryboard,
+        navigatable: Navigatable.Type
+    ) {
+        self.register(Navigatable.self, storyboard: storyboard)
+    }
+    
+    @available(swift, deprecated: 5, obsoleted: 6, renamed: "register(_:storyboard:conigurator:)")
+    public func register<Navigatable: NGSNavigatable, Destinatable>(
+        storyboard: NGSStoryboard,
+        navigatable: Navigatable.Type,
+        conigurator: @escaping NGSDestinatableInjector<Destinatable>
+        ) {
+        
+        self.register(Navigatable.self, storyboard: storyboard, conigurator: conigurator)
+    }
+    
+    @available(swift, deprecated: 5, obsoleted: 6, renamed: "register(_:factory:)")
+    public func register<Navigatable: NGSNavigatable>(
+        navigatable _: Navigatable.Type,
+        factory: @escaping NGSVCFactoryResolver
+        ) {
+        
+        self.register(Navigatable.self, factory: factory)
+    }
+    
+    @available(swift, deprecated: 5, obsoleted: 6, renamed: "register(_:factory:conigurator:)")
+    public func register<Navigatable: NGSNavigatable, Destinatable>(
+        navigatable _: Navigatable.Type,
+        factory: @escaping NGSVCFactoryResolver,
+        conigurator: @escaping NGSDestinatableInjector<Destinatable>
+        ) {
+        
+        self.register(Navigatable.self, factory: factory, conigurator: conigurator)
     }
 }

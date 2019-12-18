@@ -35,9 +35,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         NGSRouterConfig.shared.appStart = AppStart()
         NGSRouterConfig.shared.start(appDelegate: self)
         
-        NGSRouterAssember.shared.register(
-            storyboard: Storyboard.main,
-            navigatable: DestinationPresenter.self
+        NGSRouterAssember.default.register(
+            DestinationPresenter.self,
+            storyboard: Storyboard.main
         ) { (vc: DestinationViewController) in
             vc.configure(
                 target: DestinationPresenter(view: vc, router: NGSRouter(transitionHandler: vc)))

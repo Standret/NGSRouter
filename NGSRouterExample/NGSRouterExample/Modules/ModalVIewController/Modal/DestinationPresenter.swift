@@ -41,6 +41,6 @@ class DestinationPresenter: NGSParamCloseNavigatable {
     }
     
     func close() {
-        try! _router.close(target: self, parameter: textForClose, animated: true)
+        _router.close(target: self, parameter: textForClose, animated: true)
     }
 }
