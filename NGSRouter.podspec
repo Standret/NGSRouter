@@ -2,7 +2,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "NGSRouter"
-  s.version      = "0.6.0"
+  s.version      = "1.0.0"
   s.summary      = "Light weight router for iOS projects"
 
   s.description  = <<-DESC
