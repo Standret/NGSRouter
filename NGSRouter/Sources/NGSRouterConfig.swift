@@ -90,6 +90,7 @@ final public class NGSRouterConfig {
     ///
     public func start(appDelegate: UIApplicationDelegate) {
         assert(appStart != nil, "appStart should be set")
+        assert(appDelegate.window != nil && appDelegate.window! != nil, "Window has to be created before calling this method")
         appDelegate.window!!.rootViewController = appStart!.startViewController
         appDelegate.window!!.makeKeyAndVisible()
         
