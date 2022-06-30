@@ -16,6 +16,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var swtchtCloseCallback: UISwitch!
     @IBOutlet weak var swtchParameter: UISwitch!
     @IBOutlet weak var swtchAnimated: UISwitch!
+    @IBOutlet weak var switchEmbedInNavController: UISwitch!
     
     @IBOutlet weak var tfText: UITextField!
     @IBOutlet weak var lblText: UILabel!
@@ -32,18 +33,23 @@ class ViewController: UIViewController {
         makeNavigation(with: .crossDisolve)
     }
     
+    @IBAction func onModalPageSheet(_ sender: Any) {
+        makeNavigation(with: .pageSheet)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         _router = NGSRouter(transitionHandler: self)
-        
-        // Do any additional setup after loading the view.
     }
     
     private func makeNavigation(with type: NGSTransitionStyle) {
+        let navController: UINavigationController? = self.switchEmbedInNavController.isOn
+        ? UINavigationController() : nil
         if swtchParameter.isOn && swtchtCloseCallback.isOn {
             _router.navigate(
                 to: DestinationPresenter.self,
+                navigationController: navController,
                 parameter: tfText.text!,
                 typeNavigation: type,
                 animated: swtchAnimated.isOn,
@@ -53,6 +59,7 @@ class ViewController: UIViewController {
         else if swtchParameter.isOn {
             _router.navigate(
                 to: DestinationPresenter.self,
+                navigationController: navController,
                 parameter: tfText.text!,
                 typeNavigation: type,
                 animated: swtchAnimated.isOn
@@ -61,6 +68,7 @@ class ViewController: UIViewController {
         else if swtchtCloseCallback.isOn {
             _router.navigate(
                 to: DestinationPresenter.self,
+                navigationController: navController,
                 typeNavigation: type,
                 animated: swtchAnimated.isOn,
                 closeCompletion: { self.lblText.text = $0 }
@@ -69,6 +77,7 @@ class ViewController: UIViewController {
         else {
             _router.navigate(
                 to: DestinationPresenter.self,
+                navigationController: navController,
                 typeNavigation: type,
                 animated: swtchAnimated.isOn
             )

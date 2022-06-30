@@ -76,6 +76,8 @@ public enum TransitionStyle {
 
     /// This case performs that current transition must be add to navigation completion stack.
     case modal(transition: UIModalTransitionStyle, presentation: UIModalPresentationStyle)
+    
+    case pageSheet(canDismiss: Bool)
 
     /// This case performs that current transition must be presented from initiated view controller.
     case `default`

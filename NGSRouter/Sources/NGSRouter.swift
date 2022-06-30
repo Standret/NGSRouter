@@ -38,8 +38,11 @@ public enum NGSTransitionStyle {
     case modal
     case crossDisolve
     case formSheet
+    case pageSheet
+    case nonDissmissablePageSheet
     
     case custom(TransitionStyle)
+    
 }
 
 public extension NGSTransitionStyle {
@@ -54,6 +57,10 @@ public extension NGSTransitionStyle {
             return .modal(transition: .crossDissolve, presentation: .fullScreen)
         case .formSheet:
             return .modal(transition: .coverVertical, presentation: .formSheet)
+        case .pageSheet:
+            return .pageSheet(canDismiss: true)
+        case .nonDissmissablePageSheet:
+            return .pageSheet(canDismiss: false)
         case .custom(let style):
             return style
         }
@@ -89,10 +96,9 @@ open class NGSRouter: NGSRouterType {
     
     // MARK: - STORYBOARD LOADING
     
-    open func loadStoryboard<Destination: NGSParamNavigatable>(
-        storyboard: NGSStoryboard,
-        to _: Destination.Type,
-        parameter: Destination.Parameter
+    open func loadStoryboard<Destination: NGSParamNavigatable>(storyboard: NGSStoryboard,
+                                                               to _: Destination.Type,
+                                                               parameter: Destination.Parameter
     ) {
         
         executer {
@@ -112,11 +118,8 @@ open class NGSRouter: NGSRouterType {
         }
     }
     
-    open func loadStoryboard<Destination: NGSNavigatable>(
-        to _: Destination.Type,
-        storyboard: NGSStoryboard
-    ) {
-        
+    open func loadStoryboard<Destination: NGSNavigatable>(to _: Destination.Type,
+                                                          storyboard: NGSStoryboard) {
         executer {
             try transitionHandler
                 .forStoryboard(factory: getTarfetStoryboardFactory(storyboard: storyboard, to: ""), to: NGSNavigatable.self)
@@ -132,33 +135,32 @@ open class NGSRouter: NGSRouterType {
     
     // MARK: - NAVIGATE
     
-    open func navigate<Destination: NGSNavigatable>(
-        to _: Destination.Type,
-        typeNavigation: NGSTransitionStyle,
-        animated: Bool
-    ) {
+    open func navigate<Destination: NGSNavigatable>(to _: Destination.Type,
+                                                    navigationController: UINavigationController?,
+                                                    typeNavigation: NGSTransitionStyle,
+                                                    animated: Bool) {
         
         executer {
             try getTransitionNode(destination: Destination.self)
                 .applyConfigurator(navigatable: Destination.self)
                 .selector(selectorName)
+                .embedInNavigationController(navigationController)
                 .to(preferred: typeNavigation.transtionStyle)
                 .transition(animate: animated)
                 .then({ $0.prepare() })
         }
     }
     
-    open func navigate<Destination: NGSParamNavigatable>(
-        to _: Destination.Type,
-        parameter: Destination.Parameter,
-        typeNavigation: NGSTransitionStyle,
-        animated: Bool
-    ) {
-        
+    open func navigate<Destination: NGSParamNavigatable>(to _: Destination.Type,
+                                                         navigationController: UINavigationController?,
+                                                         parameter: Destination.Parameter,
+                                                         typeNavigation: NGSTransitionStyle,
+                                                         animated: Bool) {
         executer {
             try getTransitionNode(destination: Destination.self)
                 .applyConfigurator(navigatable: Destination.self)
                 .selector(selectorName)
+                .embedInNavigationController(navigationController)
                 .to(preferred: typeNavigation.transtionStyle)
                 .transition(animate: animated)
                 .then({
@@ -169,17 +171,16 @@ open class NGSRouter: NGSRouterType {
         }
     }
     
-    public func navigate<Destination: NGSCloseNavigatable>(
-        to _: Destination.Type,
-        typeNavigation: NGSTransitionStyle,
-        animated: Bool,
-        closeCompletion: @escaping CloseCompletition<Destination.CloseObject>
-    ) {
-        
+    open func navigate<Destination: NGSCloseNavigatable>(to _: Destination.Type,
+                                                         navigationController: UINavigationController?,
+                                                         typeNavigation: NGSTransitionStyle,
+                                                         animated: Bool,
+                                                         closeCompletion: @escaping CloseCompletition<Destination.CloseObject>) {
         executer {
             try getTransitionNode(destination: Destination.self)
                 .applyConfigurator(navigatable: Destination.self)
                 .selector(selectorName)
+                .embedInNavigationController(navigationController)
                 .to(preferred: typeNavigation.transtionStyle)
                 .transition(animate: animated)
                 .then({
@@ -190,18 +191,17 @@ open class NGSRouter: NGSRouterType {
         }
     }
     
-    public func navigate<Destination: NGSParamCloseNavigatable>(
-        to _: Destination.Type,
-        parameter: Destination.Parameter,
-        typeNavigation: NGSTransitionStyle,
-        animated: Bool,
-        closeCompletion: @escaping CloseCompletition<Destination.CloseObject>
-    ) {
-        
+    open func navigate<Destination: NGSParamCloseNavigatable>(to _: Destination.Type,
+                                                              navigationController: UINavigationController?,
+                                                              parameter: Destination.Parameter,
+                                                              typeNavigation: NGSTransitionStyle,
+                                                              animated: Bool,
+                                                              closeCompletion: @escaping CloseCompletition<Destination.CloseObject>) {
         executer {
             try getTransitionNode(destination: Destination.self)
                 .applyConfigurator(navigatable: Destination.self)
                 .selector(selectorName)
+                .embedInNavigationController(navigationController)
                 .to(preferred: typeNavigation.transtionStyle)
                 .transition(animate: animated)
                 .then({
@@ -226,8 +226,7 @@ open class NGSRouter: NGSRouterType {
     open func close<Destination: NGSCloseNavigatable>(
         target: Destination,
         parameter: Destination.CloseObject,
-        animated: Bool
-    ) {
+        animated: Bool) {
         
         target.closableObject.invoke(with: parameter)
         
@@ -239,13 +238,13 @@ open class NGSRouter: NGSRouterType {
         }
     }
     
-    internal func getTarfetStoryboardFactory(storyboard: NGSStoryboard, to name: String) -> StoryboardFactory {
+    public func getTarfetStoryboardFactory(storyboard: NGSStoryboard, to name: String) -> StoryboardFactory {
         
         let storyboard = UIStoryboard(name: storyboard.name, bundle: Bundle.main)
         return StoryboardFactory(storyboard: storyboard, restorationId: name)
     }
     
-    internal func getTransitionNode<Navigatable: NGSNavigatable>(destination: Navigatable.Type) throws -> TransitionNode<Navigatable> {
+    public func getTransitionNode<Navigatable: NGSNavigatable>(destination: Navigatable.Type) throws -> TransitionNode<Navigatable> {
         
         if let storyboardData = NGSRouterAssember.default.fetchStoryboard(Navigatable.self) {
             return try transitionHandler
@@ -341,10 +340,9 @@ public extension NGSRouter {
     }
 }
 
-fileprivate extension NGSRouter {
+public extension NGSRouter {
     
     func executer(action: () throws -> Void) {
-        
         do {
             try action()
         }
@@ -352,4 +350,5 @@ fileprivate extension NGSRouter {
             NGSRouterConfig.shared.errorHandler?(error)
         }
     }
+    
 }

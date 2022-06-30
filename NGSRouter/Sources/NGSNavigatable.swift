@@ -40,7 +40,7 @@ public protocol NGSStoryboard {
 ///
 /// This protocol describe ability for navigation
 ///
-public protocol NGSNavigatable: class {
+public protocol NGSNavigatable: AnyObject {
     
     ///
     /// This function call before navigation

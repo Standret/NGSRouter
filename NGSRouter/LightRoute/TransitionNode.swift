@@ -99,11 +99,16 @@ public final class TransitionNode<T>: GenericTransitionNode<T> {
 					splitController.showDetailViewController(destination, sender: nil)
 				}
 
-            case .modal(let modalStyle):
-                destination.modalTransitionStyle = modalStyle.transition
-                destination.modalPresentationStyle = modalStyle.presentation
+            case .modal(let modalStyle, let presentation):
+                destination.modalTransitionStyle = modalStyle
+                destination.modalPresentationStyle = presentation
                 root.present(destination, animated: animated, completion: nil)
-
+            case .pageSheet(let canDismiss):
+                destination.modalPresentationStyle = .pageSheet
+                if #available(iOS 13.0, *) {
+                    destination.isModalInPresentation = !canDismiss
+                }
+                root.present(destination, animated: animated, completion: nil)
             case .default:
                 root.present(destination, animated: animated, completion: nil)
             }
@@ -139,6 +144,19 @@ public final class TransitionNode<T>: GenericTransitionNode<T> {
 		}
 	}
 	
+    ///
+    /// Embed destination as root controller of the UINavigationController .
+    ///
+    /// - Parameter navigationController: Navigation controller that should be embed
+    ///
+    public func embedInNavigationController(_ navigationController: UINavigationController?) -> TransitionNode<T> {
+        if let destination = self.destination, let navController = navigationController {
+            navController.viewControllers = [destination]
+            self.destination = navController
+        }
+        return self
+    }
+    
 	///
 	/// Turn on or off animate for current transition.
 	/// - Note: By default this transition is animated.

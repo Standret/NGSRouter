@@ -26,7 +26,7 @@
 import Foundation
 
 /// This protocol describe how do transition beetwen ViewControllers.
-public protocol TransitionHandler: class {
+public protocol TransitionHandler: AnyObject {
     
     ///
     /// The method of initiating the transition in the current storyboard, which depends on the root view controller.

@@ -24,8 +24,9 @@
 //
 
 import Foundation
+import UIKit
 
-public protocol NGSRouterType: class {
+public protocol NGSRouterType: AnyObject {
     
     ///
     /// Represent abstract type which used for close closure
@@ -61,6 +62,7 @@ public protocol NGSRouterType: class {
     ///
     /// Load new module to screen based on generic navigation type
     /// - Parameter to: represent target Destination
+    /// - Parameter navigationController: navigation controller that should be embed
     /// - Parameter typeNavigation: naviagtion style
     /// - Parameter animated: animated of transition
     ///
@@ -68,6 +70,7 @@ public protocol NGSRouterType: class {
     ///
     func navigate<Destination: NGSNavigatable>(
         to _: Destination.Type,
+        navigationController: UINavigationController?,
         typeNavigation: NGSTransitionStyle,
         animated: Bool
         )
@@ -75,6 +78,7 @@ public protocol NGSRouterType: class {
     ///
     /// Load new module to screen based on generic navigation type
     /// - Parameter to: represent target Destination
+    /// - Parameter navigationController: navigation controller that should be embed
     /// - Parameter parameter: navigation parameter which pass to next module
     /// - Parameter typeNavigation: naviagtion style
     /// - Parameter animated: animated of transition
@@ -83,6 +87,7 @@ public protocol NGSRouterType: class {
     ///
     func navigate<Destination: NGSParamNavigatable>(
         to _: Destination.Type,
+        navigationController: UINavigationController?,
         parameter: Destination.Parameter,
         typeNavigation: NGSTransitionStyle,
         animated: Bool
@@ -91,6 +96,7 @@ public protocol NGSRouterType: class {
     ///
     /// Load new module to screen based on generic navigation type with close closure
     /// - Parameter to: represent target Destination
+    /// - Parameter navigationController: navigation controller that should be embed
     /// - Parameter typeNavigation: naviagtion style
     /// - Parameter animated: animated of transition
     /// - Parameter closeCompletion: represent closure which invokes before close opened module
@@ -99,6 +105,7 @@ public protocol NGSRouterType: class {
     ///
     func navigate<Destination: NGSCloseNavigatable>(
         to _: Destination.Type,
+        navigationController: UINavigationController?,
         typeNavigation: NGSTransitionStyle,
         animated: Bool,
         closeCompletion: @escaping CloseCompletition<Destination.CloseObject>
@@ -107,6 +114,7 @@ public protocol NGSRouterType: class {
     ///
     /// Load new module to screen based on generic navigation type with close closure
     /// - Parameter to: represent target Destination
+    /// - Parameter navigationController: navigation controller that should be embed
     /// - Parameter parameter: navigation parameter which pass to next module
     /// - Parameter typeNavigation: naviagtion style
     /// - Parameter animated: animated of transition
@@ -116,6 +124,7 @@ public protocol NGSRouterType: class {
     ///
     func navigate<Destination: NGSParamCloseNavigatable>(
         to _: Destination.Type,
+        navigationController: UINavigationController?,
         parameter: Destination.Parameter,
         typeNavigation: NGSTransitionStyle,
         animated: Bool,
@@ -143,11 +152,12 @@ public protocol NGSRouterType: class {
         )
 }
 
-extension NGSRouterType {
+public extension NGSRouterType {
     
     ///
     /// Load new module to screen based on generic navigation type
     /// - Parameter to: represent target Destination
+    /// - Parameter navigationController: navigation controller that should be embed
     /// - Parameter typeNavigation: naviagtion style
     /// - Parameter animated: animated of transition
     ///
@@ -155,12 +165,14 @@ extension NGSRouterType {
     ///
     func navigate<Destination: NGSNavigatable>(
         to _: Destination.Type,
+        navigationController: UINavigationController? = nil,
         typeNavigation: NGSTransitionStyle = .push,
         animated: Bool = true
         ) {
         
         self.navigate(
             to: Destination.self,
+            navigationController: nil,
             typeNavigation: typeNavigation,
             animated: animated
         )
@@ -169,6 +181,7 @@ extension NGSRouterType {
     ///
     /// Load new module to screen based on generic navigation type
     /// - Parameter to: represent target Destination
+    /// - Parameter navigationController: navigation controller that should be embed
     /// - Parameter parameter: navigation parameter which pass to next module
     /// - Parameter typeNavigation: naviagtion style
     /// - Parameter animated: animated of transition
@@ -177,6 +190,7 @@ extension NGSRouterType {
     ///
     func navigate<Destination: NGSParamNavigatable>(
         to _: Destination.Type,
+        navigationController: UINavigationController? = nil,
         parameter: Destination.Parameter,
         typeNavigation: NGSTransitionStyle = .push,
         animated: Bool = true
@@ -184,6 +198,7 @@ extension NGSRouterType {
         
         self.navigate(
             to: Destination.self,
+            navigationController: nil,
             parameter: parameter,
             typeNavigation: typeNavigation,
             animated: animated
@@ -193,6 +208,7 @@ extension NGSRouterType {
     ///
     /// Load new module to screen based on generic navigation type with close closure
     /// - Parameter to: represent target Destination
+    /// - Parameter navigationController: navigation controller that should be embed
     /// - Parameter typeNavigation: naviagtion style
     /// - Parameter animated: animated of transition
     /// - Parameter closeCompletion: represent closure which invokes before close opened module
@@ -201,6 +217,7 @@ extension NGSRouterType {
     ///
     func navigate<Destination: NGSCloseNavigatable>(
         to _: Destination.Type,
+        navigationController: UINavigationController? = nil,
         typeNavigation: NGSTransitionStyle = .push,
         animated: Bool = true,
         closeCompletion: @escaping CloseCompletition<Destination.CloseObject>
@@ -208,6 +225,7 @@ extension NGSRouterType {
         
         self.navigate(
             to: Destination.self,
+            navigationController: nil,
             typeNavigation: typeNavigation,
             animated: animated,
             closeCompletion: closeCompletion
@@ -217,6 +235,7 @@ extension NGSRouterType {
     ///
     /// Load new module to screen based on generic navigation type with close closure
     /// - Parameter to: represent target Destination
+    /// - Parameter navigationController: navigation controller that should be embed
     /// - Parameter parameter: navigation parameter which pass to next module
     /// - Parameter typeNavigation: naviagtion style
     /// - Parameter animated: animated of transition
@@ -226,6 +245,7 @@ extension NGSRouterType {
     ///
     func navigate<Destination: NGSParamCloseNavigatable>(
         to _: Destination.Type,
+        navigationController: UINavigationController? = nil,
         parameter: Destination.Parameter,
         typeNavigation: NGSTransitionStyle = .push,
         animated: Bool = true,
@@ -234,6 +254,7 @@ extension NGSRouterType {
         
         self.navigate(
             to: Destination.self,
+            navigationController: nil,
             parameter: parameter,
             typeNavigation: typeNavigation,
             animated: animated,
