@@ -49,7 +49,11 @@ public extension NGSTransitionStyle {
         case .push:
             return .navigation(style: .push)
         case .modal:
-            return .modal(transition: .coverVertical, presentation: .fullScreen)
+            if #available(iOS 13.0, *) {
+                return .modal(transition: .coverVertical, presentation: .automatic)
+            } else {
+                return .modal(transition: .coverVertical, presentation: .fullScreen)
+            }
         case .crossDisolve:
             return .modal(transition: .crossDissolve, presentation: .fullScreen)
         case .formSheet:
